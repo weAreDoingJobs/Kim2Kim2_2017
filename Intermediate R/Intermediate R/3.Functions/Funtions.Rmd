@@ -1,0 +1,502 @@
+---
+title: "Fuctions"
+author: "HaeJoong Lee"
+date: "2017년 1월 15일"
+output: html_document
+---
+함수는 거의 모든 프로그래밍 언어에서 매우 중요한 개념입니다. R은 다르지 않다. 함수가 무엇인지, 어떻게 사용할 수 있는지 배우고 나면, 자신 만의 함수를 작성하여 완전히 제어 할 수 있습니다.
+
+###1.Function documentation
+
+
+R 함수를 사용하기 전에 생각하는 인수를 명확히해야합니다. 설명, 사용법 및 인수와 같은 모든 관련 세부 정보는 설명서에서 찾을 수 있습니다. 예를 들어, sample () 함수에 대한 설명서를 보려면 다음 R 명령 중 하나를 사용할 수 있습니다.
+
+```{r}
+help(sample)
+?sample
+```
+DataCamp 인터페이스의 콘솔에서이 명령을 실행하면 www.rdocumentation.org로 리다이렉트됩니다.
+
+sample () 함수의 인수를보기위한 빠른 해킹은 args () 함수입니다. 콘솔에서 사용해보십시오.
+```{r}
+args(sample)
+```
+
+다음 연습에서는 복잡성이 증가하는 mean () 함수를 사용하는 방법을 배우게됩니다. 당신이해야 할 첫 번째 일은 mean () 함수에 익숙해지는 것입니다.
+
+```{r}
+# Consult the documentation on the mean() function
+help(mean)
+
+# Inspect the arguments of the mean() function
+args(mean)
+```
+
+문제:
+•Consult the documentation on the mean() function: ?mean or help(mean).
+•Inspect the arguments of the mean() function using the args() function.
+
+
+
+###2.Use a function
+
+
+mean () 함수에 대한 문서는 우리에게 꽤 많은 정보를 준다.
+• mean () 함수는 산술 평균을 계산합니다.
+• 가장 일반적인 방법은 여러 인자를 취합니다 : x와 ....
+• x 인수는 숫자, 논리 또는 시간 관련 정보가 들어있는 벡터 여야합니다.
+
+R은 위치와 이름으로 인수를 일치시킬 수 있습니다. 그 차이를 아직도 기억할 수 있습니까? 이 연습에서 알게 될 것입니다!
+
+다시 한 번 지난 7 일 동안의 소셜 네트워크 프로필 조회수로 작업하게됩니다. 이들은 linkedin 및 facebook 벡터에 저장되며 오른쪽 편집기에서 이미 정의되어 있습니다.
+
+```{r}
+# The linkedin and facebook vectors have already been created for you
+linkedin <- c(16, 9, 13, 5, 2, 17, 14)
+facebook <- c(17, 7, 5, 16, 8, 13, 14)
+
+# Calculate average number of views
+avg_li <- mean(linkedin)
+avg_fb <- mean(facebook)
+
+# Inspect avg_li and avg_fb
+avg_li
+avg_fb
+```
+연습:
+•Calculate the average number of views for both linkedin and facebook and assign the result to avg_li and avg_fb, respectively. Experiment with different types of argument matching!
+•Print out both avg_li and avg_fb
+
+
+###3.Use a function (2)
+
+mean () 함수에 대한 문서를 다시 확인하십시오.
+```{r}
+?mean
+```
+문서의 Usage 섹션에는 mean () 함수의 두 가지 버전이 포함되어 있습니다. 첫 사용법,
+```{r}
+# mean(x, ...)
+```
+
+mean 함수의 가장 일반적인 사용법입니다. 그러나 'Default S3 method'은 다음과 같습니다.
+```{r}
+# mean(x, trim = 0, na.rm = FALSE, ...)
+```
+...는 생략 부호라고합니다. R이 함수를 명시 적으로 이름을 지정하지 않고 인수를 전달하는 방법입니다. 줄임표는 앞으로의 과정에서보다 자세히 다루어 질 것입니다.
+
+이 연습의 나머지 부분에서는 평균 기능의 두 번째 용도로 작업하십시오. trim과 na.rm에는 기본값이 있습니다. 이것은 선택적 인수가되게합니다.
+
+```{r}
+# The linkedin and facebook vectors have already been created for you
+linkedin <- c(16, 9, 13, 5, 2, 17, 14)
+facebook <- c(17, 7, 5, 16, 8, 13, 14)
+
+# Calculate the mean of the sum
+avg_sum <- mean(linkedin+facebook)
+
+# Calculate the trimmed mean of the sum
+avg_sum_trimmed <- mean(linkedin+facebook,trim=0.2) 
+
+#trim은 데이터들을 오름차순 나열하여 0.2이면 앞 뒤 0.2퍼센트에 해당하는 데이터들을 제거하여 나머지 데이터들의 평균을 구하는 것임
+
+# Inspect both new variables
+avg_sum
+avg_sum_trimmed
+```
+
+연습:
+•Calculate the mean of the element-wise sum of linkedin and facebook and store the result in a variable avg_sum.
+•Calculate the mean once more, but this time set the trim argument equal to 0.2 and assign the result to avg_sum_trimmed.
+•Print out both avg_sum and avg_sum_trimmed; can you spot the difference?
+
+
+###4.Use a function (3)
+비디오에서 Filip은 sd () 함수의 인수를 지정하는 예제를 안내합니다. sd () 함수에는 표준 편차를 계산하기 전에 입력 벡터에서 누락 값을 제거할지 여부를 지정하는 선택적 인수 na.rm이 있습니다.
+
+문서를 잘 살펴 본다면 mean () 함수에도 na.rm이라는 인수가 있으며이 함수가 똑같은 기능을 수행한다는 것을 알게됩니다. 기본적으로, 기본 S3 메소드의 사용법에 표시되어 있으므로 FALSE로 설정됩니다.
+
+```{r}
+#mean(x, trim = 0, na.rm = FALSE, ...)
+```
+vector linkedin과 facebook에 누락 된 값 (NA)이 있으면 어떻게되는지 봅시다.
+
+```{r}
+#The linkedin and facebook vectors have already been created for you.
+linkedin <- c(16,9,13,5,NA,17,14)
+facebook <- c(17,NA,5,16,8,13,14)
+
+#Basic average of linkedin
+mean(linkedin)
+
+#Advanced average of linkedin
+mean(linkedin,na.rm=TRUE) #na.rm=TRUE "Null"값 제외한 평균 계산
+```
+
+문제:
+•Calculate the average number of LinkedIn profile views, without specifying any optional arguments. Simply print the result to the console.
+•Calculate the average number of LinkedIn profile views, but this time tell R to strip missing values from the input vector.
+
+
+###5.Functions inside functions
+
+R 함수는 다른 곳에서 사용할 수있는 객체를 반환한다는 것을 이미 알고 있습니다. 이렇게하면 이전에 본 것처럼 함수 내부에서 함수를 쉽게 사용할 수 있습니다.
+
+```{r}
+speed <- 31
+print(paste("Your speed is", speed))
+
+```
+print ()와 paste () 함수 모두 줄임표 (...)를 인수로 사용합니다. 그들이 어떻게 사용되는지 알아낼 수 있습니까?
+
+```{r}
+#The linkedin and facebook vectors have already been created for you.
+linkedin <- c(16,9,13,5,NA,17,14)
+facebook <- c(17,NA,5,16,8,13,14)
+
+#Calculate the mean absolute deviation
+mean(abs(linkedin-facebook),na.rm=TRUE)
+```
+
+문제:
+Use abs() on linkedin - facebook to get the absolute differences between the daily Linkedin and Facebook profile views. Next, use this function call inside mean() to calculate the Mean Absolute Deviation. In the mean() call, make sure to specify na.rm to treat missing values correctly!
+
+
+###5.Required, or optional?
+
+지금까지는 필수 인수와 선택적 인수의 차이를 잘 이해하고있을 것입니다. mean () 함수를 마지막으로 살펴봄으로써이 차이를 새로 고쳐 보겠습니다.
+```{r}
+#mean(x, trim = 0, na.rm = FALSE, ...)
+```
+x는 필수입니다. 지정하지 않으면 R이 오류를 발생시킵니다. trim 및 na.rm은 선택적 인수입니다. 인수가 명시 적으로 지정되지 않은 경우 사용되는 기본값이 있습니다.
+
+문제:
+
+다음 중 read.table () 함수에 관한 설명은 사실입니까?
+1. header, sep and quote are all optional arguments.
+2. row.names and fileEncoding don't have default values.
+3. read.table("myfile.txt", "-", TRUE) will throw an error.
+4. read.table("myfile.txt", sep = "-", header = TRUE) will throw an error.
+
+답:1,3번임
+
+
+###6.Write your own function
+
+와우, 일이 심각해지고 있습니다 ... 당신은 자신의 기능을 쓰려고합니다! 시작하기 전에 다음 함수 템플릿을 살펴보십시오.
+
+```{r}
+# my_fun <- function(arg1, arg2) {
+  # body
+# }
+```
+
+이 래서 피는 예를 들어 변수에 벡터를 지정하는 것처럼 대입 연산자 (<-)를 사용합니다. 이것은 우연이 아닙니다. R에서 함수를 만드는 것은 기본적으로 함수 객체를 변수에 대입하는 것입니다! 위의 래서 피에서는 정의를 실행하자마자 작업 공간에서 사용할 수있게되는 새로운 R 변수 my_fun을 작성합니다. 그때부터 my_fun을 함수로 사용할 수 있습니다.
+
+```{r}
+#Create a function pow_two()
+pow_two <- function(x){
+  x*x
+}
+
+#Use the function
+pow_two(12)
+
+#Create a function sum_abs
+sum_abs<-function(x,y){
+  sum(abs(x),abs(y))
+}
+
+#Use the function
+sum_abs(-2,3)
+
+```
+
+문제:
+•Create a function pow_two(): it takes one argument and returns that number squared (that number times itself).
+•Call this newly defined function with 12 as input.
+•Next, create a function sum_abs(), that takes two arguments and returns the sum of the absolute values of both arguments.
+•Finally, call the function sum_abs() with arguments -2 and 3 afterwards.
+
+
+###7.Write your own function (2)
+
+함수에 입력이 필요하지 않은 상황이 있습니다. 우리가 공정한 주사위 던지기의 무작위 결과를주는 함수를 작성한다고 가정 해 보겠습니다.
+```{r}
+throw_dice <- function() {
+  number <- sample(1:6, size = 1)
+  number
+}
+
+throw_dice()
+```
+인수를 취하지 않는 함수를 작성하는 것은 여러분에게 달려 있습니다!
+
+
+```{r}
+# Define the function hello()
+hello<-function(){
+  print("Hi There!")
+  return(TRUE)
+}
+
+hello()  
+```
+
+문제:
+•Define a function, hello(). It prints out "Hi there!" and returns TRUE. It has no arguments.
+•Call the function hello(), without specifying arguments of course.
+
+
+###8.Write your own function (3)
+당신은 여전히 ..디폴트 값을 가지거나 가지지 않는 인수의 차이점을 기억합니까? 콘솔에? sd를 입력하여 sd () 함수를 다시 살펴보십시오. 사용 섹션에서는 다음 정보를 보여줍니다.
+```{r}
+# sd(x, na.rm = FALSE)
+```
+이것은 x가 sd () 함수가 올바르게 호출되도록 정의되어야한다는 것을 말해 주지만, na.rm에는 이미 기본값이 있습니다. 이 인수를 지정하지 않으면 오류가 발생하지 않습니다.
+
+자신의 R 함수에서 기본 인수 값을 정의 할 수 있습니다. 다음과 같은 방법으로이 작업을 수행 할 수 있습니다.
+```{r}
+my_fun <- function(arg1, arg2 = val2) {
+  body
+}
+```
+오른쪽의 편집기에는 이미 pow_two () 함수의 확장 버전이 포함되어 있습니다. 너 끝낼 수있어?
+
+```{r}
+# Finish the pow_two() function
+pow_two <- function(x,print_info = TRUE) {
+  y <- x ^ 2
+  if(print_info==TRUE){
+    print(paste(x, "to the power two equals", y))
+  }
+  return(y)
+}
+pow_two(2)
+```
+
+문제:
+•Add an optional argument, named print_info, that is TRUE by default.
+•Wrap an if construct around the print() function: this function should only be executed if print_info is TRUE.
+•Feel free to experiment with the pow_two() function you've just coded.
+
+
+###9.Function scoping
+Filip이 비디오에서 논의하지 않은 문제는 기능 범위입니다. 함수 내에 정의 된 변수는 해당 함수 외부에서 액세스 할 수 없다는 것을 의미합니다. 다음 코드를 사용하여 결과를 이해하는지 확인하십시오.
+
+```{r}
+pow_two <- function(x) {
+  y <- x ^ 2
+  return(y)
+}
+pow_two(4)
+```
+y는 pow_two () 함수 안에 정의되어 있으므로 함수 밖에서는 액세스 할 수 없습니다. 이 경우 함수의 인수 x에도 해당됩니다.
+
+어떤 문장이 다음 코드 덩어리에 맞습니까? two_dice () 함수는 이미 작업 영역에서 사용할 수 있습니다.
+
+문제:
+```{r}
+two_dice <- function() {
+  possibilities <- 1:6
+  dice1 <- sample(possibilities, size = 1)
+  dice2 <- sample(possibilities, size = 1)
+  dice1 + dice2
+}
+```
+
+Possible Answers 
+ 1.Executing two_dice() causes an error. 
+ 2.Executing res <- two_dice() makes the contents of dice1 and dice2 available outside the function. 
+ 3.Whatever the way of calling the two_dice() function, R won't have access to dice1 and dice2 outside the function.
+
+답:3번
+
+
+###10.R passes arguments by value
+
+제목은 이미 그것을 버리고 : R은 인수로 값을 전달합니다. 이것은 무엇을 의미 하는가? 간단히 말해서, R 함수는 사용자가 해당 함수에 입력 한 변수를 변경할 수 없다는 것을 의미합니다. 간단한 예를 봅시다 (콘솔에서 시도해보십시오) :
+
+```{r}
+triple <- function(x) {
+  x <- 3*x
+  x
+}
+a <- 5
+triple(a)
+a
+```
+triple () 함수 안에서 인수 x는 3 번 값으로 덮어 씁니다. 그 후에 이 새로운 x가 반환됩니다. 변수 a가 5 인이 함수를 호출하면 15를 얻습니다. 그러나 변경 값을 계산합니까? R이를 참조로 triple()에 전달하면 함수 내부의 x를 재정의하면 함수 외부의 변수 a로 리플됩니다. 그러나 R은 값을 전달하므로 명시 적 할당을하지 않으면 함수에 전달한 R 객체가 절대로 변경 될 수 없습니다. a는 triple (a)를 호출 한 후에도 5와 동일하게 유지됩니다.
+
+문제:
+Can you tell which one of the following statements is false about the following piece of code?
+```{r}
+increment <- function(x, inc = 1) {
+  x <- x + inc
+  x
+}
+count <- 5
+a <- increment(count, 2)
+b <- increment(count)
+count <- increment(count, 2)
+
+```
+선택지:
+1. a and b equal 7 and 6 respectively after executing this code block. 
+2. After the first call of increment(), where a is defined, a equals 7 and count equals 5. 
+3. In the end, count will equal 10. 
+4. In the last expression, the value of count was actually changed because of the explicit assignment.
+
+
+답:3번
+
+
+###11.R you functional?
+
+이제는 다양한 유형의 인수 및 반환 값을 사용하여 함수를 정의 할 수있는 기술을 습득 했으므로 고급 함수를 만들어야합니다. 이전 실습에서 알아 봤 듯이, 컨트롤 흐름 구성, 루프 및 기타 기능을 함수 본문에 추가 할 수 있습니다.
+
+소셜 미디어의 예를 기억하십니까? 당신이 손을 더럽게 바로 잡을 수 있도록 링크드 인과 페이스 북은 이미 작업 공간에 정의되어 있습니다. 첫 번째 단계에서는이 벡터의 단일 값을 해석 할 수있는 함수를 작성합니다. 다음 연습에서는 전체 벡터를 한 번에 처리 할 수있는 또 다른 함수를 작성합니다.
+
+```{r}
+# The linkedin and facebook vectors have already been created for you
+linkedin <- c(16, 9, 13, 5, 2, 17, 14)
+facebook <- c(17, 7, 5, 16, 8, 13, 14)
+# Define the interpret function
+interpret <- function(num_views) {
+  if (num_views > 15) {
+    print("You're popular!")
+    return(num_views)
+  } else {
+    print("Try to be more visible!")
+    return(0)
+  }
+}
+
+# Call the interpret function twice
+interpret(linkedin[1])
+interpret(facebook[2])
+```
+
+문제:
+•Finish the function definition for interpret(), that interprets the number of profile views on a single day: ◦The function takes one argument, num_views.
+◦If num_views is greater than 15, the function prints out "You're popular!" to the console and returns num_views.
+◦Else, the function prints out "Try to be more visible!" and returns 0.
+
+•Finally, call the interpret() function twice: on the first value of the linkedin vector and on the second element of the facebook vector.
+
+
+###12.R you functional? (2)
+
+interpret () 함수의 가능한 구현은 이미 편집기에서 사용할 수 있습니다. 이 연습에서는 interpret () 함수를 사용하여 벡터 내부의 일별 프로파일보기에서 모든 데이터를 해석하는 또 다른 함수를 작성합니다. 또한 요청할 경우 인기있는 요일에 뷰의 합계를 반환합니다. for 루프는 모든 벡터 요소를 반복하는 데 이상적입니다. 인기있는 요일에보기의 합계를 반환하는 기능은 기본값을 사용하여 함수 인수를 통해 코딩 할 수있는 기능입니다.
+
+```{r}
+# The linkedin and facebook vectors have already been created for you
+linkedin <- c(16, 9, 13, 5, 2, 17, 14)
+facebook <- c(17, 7, 5, 16, 8, 13, 14)
+
+# The interpret() can be used inside interpret_all()
+interpret <- function(num_views) {
+  if (num_views > 15) {
+    print("You're popular!")
+    return(num_views)
+  } else {
+    print("Try to be more visible!")
+    return(0)
+  }
+}
+
+# Define the interpret_all() function
+# views: vector with data to interpret
+# return_sum: return total number of views on popular days?
+interpret_all <- function(views, return_sum=TRUE) {
+  count <- 0
+
+  for (v in views) {
+    count<- count + interpret(v)
+  }
+
+  if (return_sum) {
+    return(count)
+  } else {
+    return(NULL)
+  }
+}
+
+# Call the interpret_all() function on both linkedin and facebook
+interpret_all(linkedin)
+interpret_all(facebook)
+
+```
+문제:
+Finish the template for the interpret_all() function:
+•Make return_sum an optional argument, that is TRUE by default.
+•Inside the for loop, iterate over all views: on every iteration, add the result of interpret(v) to count. Remember that interpret(v) returns v for popular days, and 0 otherwise. At the same time, interpret(v) will also do some printouts.
+•Finish the if construct: ◦If return_sum is TRUE, return count.
+◦Else, return NULL.
+
+
+Call this newly defined function on both linkedin and facebook.
+
+
+
+###13.Load an R Package
+기본적으로 두 개의 매우 중요한 기능이 R 패키지로 제공됩니다.
+• install.packages ()는 예상대로 패키지를 설치합니다.
+• library () : 패키지를로드합니다. 즉, 패키지를 R 작업 영역의 검색 목록에 연결합니다.
+
+패키지를 설치하려면 관리자 권한이 필요합니다. 즉, install.packages ()는 DataCamp 인터페이스에서 작동하지 않습니다. 그러나 거의 모든 CRAN 패키지가 Google 서버에 설치됩니다. library ()로로드 할 수 있습니다.
+
+이 연습에서는 데이터 시각화를위한 강력한 패키지 인 ggplot2 패키지를로드하는 방법을 배우게됩니다. 이것을 사용하여 mtcars 데이터 프레임의 두 변수의 플롯을 만듭니다. 데이터는 이미 작업 공간에서 준비되었습니다.
+
+시작하기 전에 콘솔에서 다음 명령을 실행하십시오.
+• search () : 현재 첨부 된 패키지를보고
+• qplot (mtcars $ wt, mtcars $ hp), mtcars 데이터 프레임의 두 변수의 플롯을 작성합니다.
+
+아직 ggplot2 패키지를로드하지 않았으므로 오류가 발생합니다!
+```{r}
+# Load the ggplot2 package
+library(ggplot2)
+
+# Retry the qplot() function
+qplot(mtcars$wt,mtcars$hp)
+
+# Check out the currently attached packages again
+search() #현재 부착되어 있는 패키지 보는방ㅂ
+```
+문제:
+•To fix the error you saw in the console, load the ggplot2 package.
+•Now, retry calling the qplot() function with the same arguments.
+•Finally, check out the currently attached packages again.
+
+
+###14.Different ways to load a package
+
+라이브러리 (ggvis)와 라이브러리 ( "ggvis")는 모두 패키지를로드하는 데 완벽하게 작동하며, 인수 유형에 따라 library () 및 require () 함수는 매우 까다 롭지 않습니다.
+
+하나 이상의 패키지를로드하려고하는 코드 덩어리를 살펴보십시오.
+```{r}
+# Chunk 1
+#library(data.table)
+#require(ggvis)
+
+# Chunk 2
+#library("data.table")
+#require(ggvis)
+
+# Chunk 3
+#library(data.table)
+#require(ggvis, character.only = TRUE) #무슨 명령어인가?
+
+# Chunk 4
+#library(c("data.table", "ggvis")) #하나씩 해야합니까?
+
+
+```
+
+문제:오류를 생성하지 않는 모든 청크를 나열하는 옵션을 선택하십시오. 오른쪽에있는 콘솔은 실험 할 수있는 콘솔입니다.
+
+Answer: 답 2 번
+1. Only (1) 
+2. (1) and (2) 
+3. (1), (2) and (3) 
+4. All of them are valid 
