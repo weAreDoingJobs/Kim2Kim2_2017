@@ -1,0 +1,209 @@
+---
+title: "4.Reproducible Excel work with XLConnect"
+author: "HaeJoong Lee"
+date: "2017년 2월 8일"
+output: html_document
+---
+
+##4.1. Connect to a workbook
+
+XLConnect로 작업 할 때 첫 번째 단계는 R 세션에서 loadWorkbook ()을 사용하여 통합 문서를로드하는 것입니다. 이 함수는 Excel 파일과 R 세션 사이에 "브리지"를 만듭니다.
+
+이 연습 및 다음 연습에서는 urbanpop.xlsx를 계속 사용하며 시간에 따라 도시 인구 데이터가 포함됩니다. Excel 파일은 현재 작업 디렉토리에서 사용할 수 있습니다.
+
+명령
+
+• library ()를 사용하여 XLConnect 패키지를로드합니다. DataCamp의 서버에 이미 설치되어 있습니다.
+• loadWorkbook ()을 사용하여 R의 "urbanpop.xlsx"파일에 대한 연결을 만듭니다. 통합 문서 my_book을 호출합니다.
+• my_book의 클래스를 인쇄하십시오. 이게 당신에게 무엇을 말합니까?
+
+```{r}
+# urbanpop.xlsx is available in your working directory
+
+# Load the XLConnect package
+ # library(XLConnect)
+
+# Build connection to urbanpop.xlsx: my_book
+ # my_book<-loadWorkbook("urbanpop.xlsx")
+
+# Print out the class of my_book
+ # class(my_book)
+```
+
+
+
+##4.2. List and read Excel sheets
+
+readxl 및 gdata와 마찬가지로 XLConnect를 사용하여 Excel 파일의 데이터를 R로 가져올 수 있습니다.
+
+시트를 Excel 파일에 나열하려면 getSheets ()를 사용하십시오. 시트에서 실제로 데이터를 가져 오려면 readWorksheet ()를 사용할 수 있습니다. 두 함수 모두 첫 번째 인수로 XLConnect 통합 문서 개체가 필요합니다.
+
+다시 urbanpop.xlsx에서 작업하게됩니다. 이 Excel 파일에 링크 된 my_book 개체가 이미 생성되었습니다.
+
+###명령
+
+• my_book이 링크하는 Excel 파일의 시트를 인쇄하십시오.
+• my_book의 두 번째 시트를 데이터 프레임으로 가져옵니다. 그것을 밖으로 인쇄하십시오.
+
+```{r}
+# XLConnect is already available
+
+# Build connection to urbanpop.xlsx
+ # my_book <- loadWorkbook("urbanpop.xlsx")
+
+# List the sheets in my_book
+ # getSheets(my_book)
+
+# Import the second sheet in my_book
+ # readWorksheet(my_book, sheet=2)
+```
+
+
+
+###4.3. Customize readWorksheet
+
+Excel 파일을 열지 않고도 urbanpop.xlsx에 대한 명확한 개요를 얻으려면 다음 코드를 실행할 수 있습니다.
+```{r}
+# my_book <- loadWorkbook ( "urbanpop.xlsx")
+# sheets <- getSheets (my_book)
+# all <- lapply (sheets, readWorksheet, object = my_book)
+# str (all)
+```
+
+우리가 1968 년, 1969 년 및 1970 년의 도시 인구 데이터에만 관심이 있다고 가정 해보십시오.이 연도의 데이터는 두 번째 시트의 3, 4 및 5 열에 있습니다. 이 열을 선택하는 것만으로는 실제 숫자가 속한 국가에 대한 어둠 속에서 우리를 떠날 것입니다.
+
+명령
+
+• 두 번째 시트의 열 3, 4 및 5 만 가져 오려면 startCol 및 endCol 인수로 readWorksheet () 명령을 확장합니다.
+• urbanpop_sel에는 더 이상 현재 국가에 대한 정보가 없습니다. 두 번째 시트의 첫 번째 열만 가져 오는 또 다른 readWorksheet () 명령을 작성할 수 있습니까? 결과 데이터 프레임을 국가로 저장하십시오.
+• 국가 및 urbanpop_sel을이 순서로 붙여 넣으려면 cbind ()를 사용하십시오. 결과를 선택 항목으로 저장하십시오.
+
+```{r}
+# XLConnect is already available
+
+# Build connection to urbanpop.xlsx
+ # my_book <- loadWorkbook("urbanpop.xlsx")
+
+# Import columns 3, 4, and 5 from second sheet in my_book: urbanpop_sel
+ # urbanpop_sel <- readWorksheet(my_book, sheet = 2,startCol=3,endCol=5)
+
+# Import first column from second sheet in my_book: countries
+ # countries<-readWorksheet(my_book, sheet=2, startCol=1, endCol=1)
+
+# cbind() urbanpop_sel and countries together: selection
+ # selection<-cbind(countries,urbanpop_sel)
+```
+
+
+
+##4.4. Add worksheet
+
+readxl 및 gdata가 Excel 데이터 만 가져올 수있는 경우 XLConnect의 실제 인터페이스를 Excel 파일에 제공하는 방식으로 R 내부에서 Excel 파일을 편집 할 수 있습니다.이 연습에서는 새 시트를 만듭니다. 다음 연습에서는 시트에 데이터를 채우고 결과를 새 Excel 파일에 저장합니다.
+
+urbanpop.xlsx로 계속 작업 할 것입니다. 이 Excel 파일에 링크 된 my_book 개체는 이미 사용할 수 있습니다.
+
+
+###문제:
+
+• create_heet ()를 사용하여 my_book에 "data_summary"라는 새 시트를 만듭니다.
+• [getSheets ()]를 사용하여 my_book이 이제 네 장의 Excel 파일을 나타내는 지 확인합니다.
+
+```{r}
+# XLConnect is already available
+
+# Build connection to urbanpop.xlsx
+ # my_book <- loadWorkbook("urbanpop.xlsx")
+
+# Add a worksheet to my_book, named "data_summary"
+ # createSheet(my_book, "data_summary")
+
+# Use getSheets() on my_book
+ # getSheets(my_book)
+```
+
+
+
+##4.5 Populate worksheet
+
+시트를 만드는 첫 번째 단계가 완료됩니다. 데이터를 채우자! summ, 두 Excel 시트에 대한 몇 가지 요약 통계가있는 데이터 프레임이 이미 코딩되어 있기 때문에 여기에서 가져올 수 있습니다.
+
+###문제:
+
+• writeWorksheet ()를 사용하여 "data_summary"시트에 summ 데이터 프레임을 채 웁니다.
+• saveWorkbook ()을 호출하여 적합한 Excel 통합 문서를 새 파일 "summar.xlsx"로 저장합니다.
+```{r}
+# XLConnect is already available
+
+# Build connection to urbanpop.xlsx
+ # my_book <- loadWorkbook("urbanpop.xlsx")
+
+# Add a worksheet to my_book, named "data_summary"
+ # createSheet(my_book, "data_summary")
+
+# Create data frame: summ
+ # sheets <- getSheets(my_book)[1:3]
+ # dims <- sapply(sheets, function(x) dim(readWorksheet(my_book, sheet = x)), USE.NAMES = FALSE)
+ # summ <- data.frame(sheets = sheets,
+ #                  nrows = dims[1, ],
+ #                  ncols = dims[2, ])
+
+# Add data in summ to "data_summary" sheet
+ # writeWorksheet(my_book,summ,sheet="data_summary")
+
+# Save workbook as summary.xlsx
+ # saveWorkbook(my_book,file="summary.xlsx")
+```
+
+
+
+##4.6. Renaming sheets
+
+생각해 보면, "data_summary"는 이상적인 이름이 아닙니다. 이러한 Excel 시트의 요약은 항상 데이터와 관련되어 있으므로 시트의 이름을 "summary"으로 지정하기 만하면됩니다.
+
+작업 영역에는 이미 세 개의 데이터 시트와 "data_summary"시트가 포함 된 Excel 파일을 참조하는 통합 문서 my_book이 포함되어 있습니다.
+
+###문제
+
+• renameSheet ()를 사용하여 네 번째 시트의 이름을 "summary"로 바꿉니다.
+• 다음으로 my_book의 getSheets ()를 호출하여 시트 이름을 출력합니다.
+• 마지막으로 my_book 개체를 실제로 새 Excel 파일 인 "renamed.xlsx"에 저장하십시오.
+```{r}
+# my_book is available
+
+# Rename "data_summary" sheet to "summary"
+ # renameSheet(my_book,"data_summary","summary")
+
+# Print out sheets of my_book
+ # getSheets(my_book)
+
+# Save workbook to "renamed.xlsx"
+ # saveWorkbook(my_book,file="renamed.xlsx")
+```
+
+
+
+##4.7. Removing sheets
+
+귀하의 동료들에게 새로운 엑셀 시트를 발표 한 후에는 모든 사람들이 큰 팬이 아닌 것처럼 보입니다. 모든 정보가 암묵적으로 사용 가능하다면 시트를 요약하고 Excel에 정보를 저장하는 이유는 무엇입니까? 그것을 지옥으로 가져 가면, 네 번째 시트 전체를 제거하십시오!
+
+명령
+
+• XLConnect 패키지를로드합니다.
+• 이전 연습에서 작성한 Excel 파일 인 "renamed.xlsx"에 대한 연결을 작성하십시오. 작업 디렉토리에서 사용할 수 있습니다. 이 연결을 my_book으로 저장하십시오.
+• my_book에서 네 번째 시트를 제거하려면 removeSheet ()를 사용합니다. 시트 이름은 "요약"입니다.
+• 결과 통합 문서 my_book을 파일 "clean.xslx"에 저장합니다.
+
+```{r}
+# Load the XLConnect package
+ # library(XLConnect)
+
+# Build connection to renamed.xlsx: my_book
+ # my_book<-loadWorkbook("renamed.xlsx")
+
+# Remove the fourth sheet
+ # removeSheet(my_book,sheet=4)
+
+# Save workbook to "clean.xlsx"
+ # saveWorkbook(my_book,file="clean.xlsx")
+```
+
