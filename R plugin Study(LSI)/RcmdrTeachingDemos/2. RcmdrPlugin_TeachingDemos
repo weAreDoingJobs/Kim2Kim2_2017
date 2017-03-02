@@ -1,0 +1,76 @@
+---
+title: "Rcmdr"
+author: "이상인"
+date: "2017년 3월 2일"
+output: html_document
+---
+teachingdemos > central limit theorem
+```{r}
+ls("package:RcmdrPlugin.TeachingDemos")
+ls("package:TeachingDemos")
+```
+
+```{r}
+#제목에 쓰는 code : initializeDialog
+initializeDialog(title = gettextRcmdr("여기에 제목을 쓰세요."))
+
+defaults <- list(nVar = "1", repsVar = 10000, nclassVar = "16")
+dialog.values <- getDialog("centralLimitTheorem", defaults)
+
+
+nVar <- tclVar(init = dialog.values$nVar) #nVar에는 dialog.values$nVar의 nVar가 들어감
+nEntry <- tkentry(top, width = "6", textvariable = nVar) # nEntry에는 nVar가 들어감
+repsVar <- tclVar(init = dialog.values$repsVar)
+repsEntry <- tkentry(top, width = "6", textvariable = repsVar)
+nclassVar <- tclVar(dialog.values$nclassVar)
+nclassEntry <- tkentry(top,width = "6", textvariable = nclassVar)
+
+onOK <- function(){
+  closeDialog()
+  n <- round(as.numeric(tclvalue(nVar)))
+  if(is.na(n) || n <= 0){
+    errorCondition(recall = simulateConfidenceIntervals, #simulationConfidenceIntervals 창을 연다.
+                   message = "Sample size must be a positive integer.")
+    return()
+    
+  }
+  reps <- round(as.numeric(tclvalue(repsVar)))
+  if(is.na(reps) || reps <= 0){
+    errorCondition(recall = simulateConfidenceIntervals,
+                   message = "Sample size must be a positive integer.")
+    return()
+  }
+  nclass <- round(as.numeric(tclvallue(nclassVar)))
+  if(is.na(nclass) || reps <= 0){
+    errorCondition(recall = simulateConfidenceIntervals,
+                   message = "Sample size must be a positive integer.")
+    return() 
+  }
+  #putDialog(dialog, values = NULL, resettable = TRUE)
+  putDialog("centralLimitTheorem", lapply(list(nVar = n,
+                                               repsVar = reps, nclassVar = nclass),as.character))
+  command <- paste("clt.examp(n = ", n, ", reps = ", reps,
+                   ", nclass = ",nclass,")", sep = "")
+  #doItAndPrint(coomand, log = TRUE, rmd = log)
+  doItAndPrint(command)
+  tkfocus(CommanderWindow())
+
+}
+
+OKCancelHelp(helpSubject = "clt.examp",resest = "centralLimitTheorem",
+             apply = "centralLimitTheorem")
+tkgrid(tklabel(top, text = "Sample size"), nEntry,sticky = "e")
+tkgrid(tklabel(top, text = "Number of samples"), repsEntry, sticky = "e")
+tkgrid(tklabel(top, text = "Approximate number of bins for histograms"), nclassEntry, sticky = "e")
+
+tkgrid(buttonsFrame, sticky = "w", columnspan = 2)
+tkgrid.configure(nEntry,sticky = "W")
+tkgrid.configure(repsEntry, sticky = "w")
+tkgrid.configure(nclassEntry, sticky = "w")
+dialogSuffix(rows = 4, columns = 2, focus = nEntry)
+```
+
+```{r}
+
+```
+
