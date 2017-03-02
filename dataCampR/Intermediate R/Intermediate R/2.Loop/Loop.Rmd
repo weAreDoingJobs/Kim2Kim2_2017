@@ -1,0 +1,346 @@
+---
+title: "Loop"
+author: "HaeJoong Lee"
+date: "2017년 1월 12일"
+output: html_document
+---
+###1.Write a while loop
+
+처음부터 while 루프를 만드는 것으로 시작하겠습니다. 그것의 제조법을 다시 한번보십시오.
+```{r}
+#while (condition) {
+#  expr
+#}
+```
+이 조리법의 조건 부분은 실행 중 어느 시점에서 거짓이되어야 함을 기억하십시오. 그렇지 않으면 while 루프가 무한정 지속됩니다. DataCamp의 학습 인터페이스에서 세션은이 경우 연결이 끊어집니다.
+
+아래 있는 코드를 살펴보십시오. 속도 변수를 초기화하고 시작하기 위해 이미 while 루프 템플릿을 제공합니다.
+
+```{r}
+#Initialize the speed variale
+speed<-64
+
+#Code the while loop
+while(speed>30){
+  print("Slow down!")
+  speed<-speed-7
+}
+
+#print out the speed variable
+speed
+
+```
+
+####Code a while loop with the following characteristics
+
+•The condition of the while loop should check if speed is higher than 30.
+•Inside the body of the while loop, print out "Slow down!".
+•Inside the body of the while loop, decrease the speed by 7 units. This step is crucial; otherwise your while loop will never stop.
+
+
+###2.Throw in more conditionals
+이전 연습에서 운전수와 운전자 조수 간의 상호 작용을 시뮬레이션했습니다. 속도가 너무 빠르면 "천천히!" 콘솔에 인쇄되어 속도가 7 단위 감소합니다.
+
+운전 조수를 더욱 발전시킬 수있는 몇 가지 방법이 있습니다. 예를 들어, 보조자는 속도에 따라 다른 메시지를 제공하거나 주어진 순간에 현재 속도를 제공 할 수 있습니다.
+
+이전 연습에서 코딩 한 while 루프와 비슷한 while 루프는 이미 편집기에서 사용할 수 있습니다. 그것은 현재 속도를 출력하지만 속도 변수를 아직 줄이지 않는 코드는 없으며 꽤 위험합니다. 적절한 변경을 할 수 있습니까?
+
+
+```{r}
+#Initialize the speed variale
+speed<-64
+
+#Extend/adapt the while loop
+while(speed>30){
+  print(paste("Your speed is",speed))
+  if(speed>48){
+    print("slow doww big time")
+    speed<-speed-11
+  } else{
+    print("slow down")
+    speed<-speed-6
+  }
+}
+```
+####Instructions
+
+•If the speed is greater than 48, have R print out "Slow down big time!", and decrease the speed by 11.
+•Otherwise, have R simply print out "Slow down!", and decrease the speed by 6.
+
+
+
+###3.Stop the while loop: break
+
+극심한 속도 위반이 필요한 매우 드문 상황이 있습니다. 허리케인이 다가 왔을 때 가능한 한 빨리 빠져 나가야한다면 어떨까요? 운전사 조수가 그 시나리오에서 속도 위반 알림을 보내지 않길 바랄 것입니다.
+
+이것은 while 루프에서 break 문을 포함시킬 수있는 좋은 기회 인 것 같습니다. break 문은 제어 문이라는 것을 기억하십시오. R이 만날 때 while 루프는 완전히 버려집니다.
+이전 연습에서 운전수와 운전자 조수 간의 상호 작용을 시뮬레이션했습니다. 속도가 너무 빠르면 "천천히!" 콘솔에 인쇄되어 속도가 7 단위 감소합니다.
+
+운전 조수를 더욱 발전시킬 수있는 몇 가지 방법이 있습니다. 예를 들어, 보조자는 속도에 따라 다른 메시지를 제공하거나 주어진 순간에 현재 속도를 제공 할 수 있습니다.
+
+이전 연습에서 코딩 한 while 루프와 비슷한 while 루프는 이미 편집기에서 사용할 수 있습니다. 그것은 현재 속도를 출력하지만 속도 변수를 아직 줄이지 않는 코드는 없으며 꽤 위험합니다. 적절한 변경을 할 수 있습니까?
+
+
+```{r}
+#Initialize the speed variale
+speed<-88
+
+while(speed>30){
+  print(paste("Your speed is",speed))
+  
+  #Break the while loop when speed exceeds 80
+  if(speed>80){
+    break
+  }
+  if(speed>48){
+    print("slow down big time")
+    speed<-speed-11
+  }
+  else{
+    print("slow down")
+    speed<-speed-6
+  }
+  }
+```
+
+####Instructions
+
+Adapt the while loop such that it is abandoned when the speed of the vehicle is greater than 80. This time, the speed variable has been initialized to 88; keep it that way.
+
+###4.Build a while loop from scratch
+
+이전 실습에서는 break 문과 제어 흐름 구성에 의해 결정된 다른 메시지 및 업데이트를 포함하는 꽤 고급 while 루프를 개발하는 방법을 안내했습니다. while 루프를 사용하여이 포괄적 인 연습 문제를 해결할 수 있다면 for 루프를 완전히 준비 할 수 있습니다.
+
+```{r}
+#Initialize i as 1
+i<-1
+
+#Code the while loop
+while(i<=10){
+  print(3*i)
+  if( (3*i)%%8==0){
+    break
+  }
+  i<-i+1
+}
+```
+####Instructions
+
+Finish the while loop so that it:
+•prints out the triple of i, so 3 * i, at each run.
+•is abandoned with a break if the triple of i is divisible by 8, but still prints out this triple before breaking.
+
+
+###5.Loop over a vector
+이전 비디오에서 Filip은 for 루프를 사용하는 두 가지 전략에 대해 말했습니다. 메모리를 새로 고치려면 R에 해당하는 다음 루프를 고려하십시오.
+```{r}
+primes <- c(2, 3, 5, 7, 11, 13)
+
+# loop version 1
+for (p in primes) {
+  print(p)
+}
+
+# loop version 2
+for (i in 1:length(primes)) {
+  print(primes[i])
+}
+```
+
+우리의 linkedin 벡터 기억 나니? 지난 7 일 동안 LinkedIn 프로필의 조회수가 포함 된 벡터입니다. linkedin 벡터는 이미 오른쪽에있는 편집기에서 정의되어 있으므로 지침에 완전히 집중할 수 있습니다!
+
+```{r}
+#The linkedin vector has already been defined for you
+linkedin<-c(16,9,13,5,2,17,14)
+
+#Loop version 1
+for(i in linkedin){
+  print(i)
+}
+
+#Loop version 2
+for(i in 1:length(linkedin)){
+  print(linkedin[i])
+}
+
+```
+####Instructions
+
+Write a for loop that iterates over all the elements of linkedin and prints out every element separately. Do this in two ways: using the loop version 1 and the loop version 2 in the example code above.
+
+
+###6.Loop over a list
+list을 반복하는 것은 벡터를 반복하는 것처럼 쉽고 편리합니다. 여기에도 두 가지 다른 접근법이 있습니다.
+```{r}
+primes_list <- list(2, 3, 5, 7, 11, 13)
+
+# loop version 1
+for (p in primes_list) {
+  print(p)
+}
+
+# loop version 2
+for (i in 1:length(primes_list)) {
+  print(primes_list[[i]])
+}
+
+```
+루프 버전 2에서 목록 요소를 선택하려면 [[]]을 두 번 대괄호로 묶어야합니다.
+
+뉴욕시의 인구 규모, 자치 읍면의 이름 및 그것이 미국의 수도인지 여부와 같은 모든 종류의 정보 목록이 있다고 가정하십시오. 우리는 이미 편집자 (출처 : Wikipedia)에서이 모든 정보를 가진 nyc 목록을 준비했습니다.
+
+```{r}
+# The nyc list is already specified
+nyc <- list(pop = 8405837, boroughs = c("Manhattan","Bronx", "Brooklyn","Queens","Staten Island"),capital = FALSE)
+
+# loop version 1
+for(i in nyc){
+  print(i)
+}
+
+# loop version 2
+for(i in 1:length(nyc)){
+  print(nyc[[i]]) #list에서는 [[i]]사용?
+}
+
+```
+####Instructions
+
+As in the previous exercise, loop over the nyc list in two different ways to print its elements:
+•Loop directly over the nyc list (loop version 1).
+•Define a looping index and do subsetting using double brackets (loop version 2).
+
+
+###7.Loop over a matrix
+
+작업 공간에는 tic-tac-toe 게임의 상태를 나타내는 행렬 ttt가 있습니다. 여기에는 "X", "O"및 "NA"값이 들어 있습니다. 가까이에서 볼 수 있도록 콘솔에서 ttt를 인쇄하십시오. 행 1과 열 1에는 "O"가 있고 행 3과 열 2에는 "NA"가 있습니다.
+
+이 연습 문제를 해결하려면 for 루프 내부에 for 루프가 있어야하며, 이는 종종 중첩 루프라고합니다. R에서 이것을하는 것은 쉬운 일입니다! 다음 레시피를 사용하기 만하면됩니다.
+
+
+```{r}
+# The tic-tac-toe matrix ttt has already been defined for you
+ttt<-matrix(c("O","NA","X","NA","O","O","X","NA","X"),ncol=3,byrow=T)
+
+
+# define the double for loop
+for (i in 1:nrow(ttt)) {
+  for (j in 1:ncol(ttt)) {
+    print(paste("On row ",i," and column ",j," the board contains ",ttt[i,j]))
+  }
+}
+```
+
+
+###8.Mix it up with control flow
+
+vector linkedin에 저장된 LinkedIn 프로필보기 데이터로 돌아가 보겠습니다. for 루프에 대한 첫 번째 연습에서 이미이 벡터의 각 요소에 대한 간단한 출력을 수행했습니다. 이 데이터에 대한 좀 더 심층적 인 해석이 아프지 않을 것입니다, 그렇죠? 조건부를 던질 시간! while 루프와 마찬가지로 for 루프 내에서 if 및 else 문을 사용할 수 있습니다.
+
+```{r}
+# The linkedin vector has already been defined for you
+linkedin <- c(16, 9, 13, 5, 2, 17, 14)
+
+# Code the for loop with conditionals
+for (li in linkedin) {
+  if ( li > 10) {
+    print("You're popular!")
+  } else {
+    print("Be more visible!")
+  }
+  print(li)
+}
+```
+
+####Instructions
+
+Add code to the for loop that loops over the elements of the linkedin vector:
+•If the vector element's value exceeds 10, print out "You're popular!".
+•If the vector element's value does not exceed 10, print out "Be more visible!"
+
+
+
+###9.Next, you break it
+
+오른쪽 편집기에서 이전 연습에 대한 가능한 해결책을 찾을 수 있습니다. 코드는 linkedin 벡터를 반복하고 li의 값에 따라 다른 메시지를 출력합니다.
+
+이 연습에서는 다음 문장을 사용합니다.
+• break 문은 활성 루프를 포기합니다. 루프의 나머지 코드는 건너 뛰고 루프는 더 이상 반복되지 않습니다.
+• next 명령문은 루프의 나머지 코드를 건너 뛰지만 반복을 계속합니다.
+
+```{r}
+# The linkedin vector has already been defined for you
+linkedin <- c(16, 9, 13, 5, 2, 17, 14)
+
+# Extend the for loop
+for (li in linkedin) {
+  if (li > 10) {
+    print("You're popular!")
+  } else {
+    print("Be more visible!")
+  }
+  
+  # Add if statement with break
+  if(li > 16){
+    print("This is ridiculous, I'm outta here!")
+    break
+    
+  }
+  
+  # Add if statement with next
+  if(li< 5){
+    print("This is too embarrassing!")
+    next
+  }
+  
+  print(li)
+}
+```
+
+Instructions
+
+Extend the for loop with two new, separate, if tests in the editor as follows:
+•If the vector element's value exceeds 16, print out "This is ridiculous, I'm outta here!" and have R abandon the for loop (break).
+•If the value is lower than 5, print out "This is too embarrassing!" and fast-forward to the next iteration (next).
+
+
+###10.Build a for loop from scratch
+
+이 연습에서는 for 루프에 대한 새로운 개념을 소개하지 않습니다.
+
+오른쪽의 편집기에서 우리는 이미 앞서 가서 변수 rquote를 정의했습니다. 이 변수는 별도의 문자가 들어있는 벡터로 분할되어 strsplit () 함수로 벡터 문자에 저장됩니다.
+
+rquote의 첫 번째 U 앞에 오는 r의 수를 세는 코드를 작성할 수 있습니까?
+
+```{r}
+# Pre-defined variables
+rquote <- "r's internals are irrefutably intriguing"
+chars <- strsplit(rquote, split = "")[[1]] #벡터로 분할시키는 함수
+
+
+# Initialize rcount
+rcount <- 0
+
+# Finish the for loop
+for (char in chars) {
+  if(char=="r"){
+    rcount <- rcount +1
+  }
+  if(char=="u"){
+    break
+  }
+}
+
+# Print out rcount
+rcount
+
+```
+
+### Instructions
+•Initialize the variable rcount, as 0.
+•Finish the for loop: ◦if char equals "r", increase the value of rcount by 1.
+◦if char equals "u", leave the for loop entirely with a break.
+
+•Finally, print out the variable rcount to the console to see if your code is correct.
+
+
+

@@ -1,0 +1,186 @@
+---
+title: "Importing Data in R"
+author: "HaeJoong Lee"
+date: "2017년 1월 24일"
+output: html_document
+---
+
+R로 불러올 수 있는 데이터 유형들
+1.flat files("," 로 구분)
+read.csv("states.csv",stringAsFactors=FALSE)
+2.Data from excel
+3.Databases(sql)
+4.Web
+5.Statistical software (sas,spss)
+
+
+###1.read.csv
+
+시작시 R 세션에 자동으로로드되는 utils 패키지는 read.csv () 함수를 사용하여 CSV 파일을 가져올 수 있습니다.
+
+이 연습에서는 swimming_pools.csv; 호주 브리즈번에있는 수영장 자료 (출처 : data.gov.au)가 있습니다. 파일에는 첫 x 째 행에 열 이름이 들어 있습니다. 행에서 값을 구분하기 위해 쉼표를 사용합니다.
+
+콘솔에 sir ()을 입력하여 작업 디렉토리의 파일을 나열하십시오. swimming_pools.csv가 포함되어 있으므로 곧바로 시작할 수 있습니다.
+
+```{r}
+# Import swimming_pools.csv: pools
+#답: pools <- read.csv("swimming_pools.csv")
+
+# Print the structure of pools
+#답 : str(pools)
+```
+
+####문제:
+•Use read.csv() to import "swimming_pools.csv" as a data frame with the name pools.
+•Print the structure of pools using str().
+
+
+###2.stringsAsFactors
+
+ stringsAsFactors를 사용하면 플랫 파일의 문자열을 factors로 변환해야하는지 여부를 R에 알릴 수 있습니다.
+
+ utils 패키지의 모든 가져 오기 함수에 대해이 factors는 TRUE입니다. 즉, 문자열을 factors로 가져옵니다. 가져 오는 문자열이 R의 범주 형 변수를 나타내는 경우에만 의미가 있습니다. stringsAsFactors를 FALSE로 설정하면 텍스트 파일의 문자열에 해당하는 데이터 프레임 열이 character가됩니다.
+
+ swimming_pools.csv 파일로 다시 작업하게됩니다. 여기에는 Factors가 아니어야하는 두 개의 열 (Name 및 Address)이 포함됩니다.
+```{r}
+# Import swimming_pools.csv correctly: pools
+#답: pools <- read.csv("swimming_pools.csv",stringsAsFactors=FALSE)
+# Check the structure of pools
+#답: str(pools)
+```
+
+####문제:
+•Use read.csv() to import the data in "swimming_pools.csv" as a data frame called pools; make sure that strings are imported as characters, not as factors.
+•Using str(), display the structure of the dataset and check that you indeed get character vectors instead of factors.
+
+
+###3.Any changes?
+다음 두 가지 방법으로 swimming_pools.csv의 데이터를로드하는 아래 코드를 관심가져보아라.
+
+```{r}
+# Option A
+#pools <- read.csv("swimming_pools.csv", stringsAsFactors = TRUE)
+
+# Option B
+#pools <- read.csv("swimming_pools.csv", stringsAsFactors = FALSE)
+
+```
+####문제:
+stringsAsFactors 인수를 다르게 지정하면 결과 풀 데이터 프레임의 여러 변수에 다른 유형이 있습니까?
+
+답:Name 과 Address 변수가 다를 것이다.
+Option A는 Factor
+Option B는 Char
+
+
+
+###4.read.delim
+
+ .csv 파일을 제외하고 기본적으로 텍스트 파일 인 .txt 파일도 있습니다. read.delim ()을 사용하여 이러한 함수를 가져올 수 있습니다. 기본적으로 sep 인수는 "\t"(레코드의 필드는 탭으로 구분됩니다) 및 header argument를 TRUE (첫 번째 행은 필드 이름 포함)로 설정합니다.
+
+ 이 연습에서는 다양한 핫도그에서 나트륨 및 칼로리 수준에 대한 정보가 포함 된 hotdogs.txt를 가져옵니다 (출처 : UCLA). 데이터 집합에는 3 개의 변수가 있지만 변수 이름은 파일의 첫 번째 줄에서 사용할 수 없습니다. 이 파일은 tab을 필드 구분 기호로 사용합니다.
+
+```{r}
+#Import hotdog.txt : hotdogs
+hotdogs <- read.delim("C:/Users/lhj91/Desktop/hotdogs.txt",header=FALSE)
+
+#summarize hotdogs
+summary(hotdogs)
+
+```
+####문제:
+•Import the data in "hotdogs.txt" with read.delim(). Call the resulting data frame hotdogs. The variable names are not on the first line, so make sure to set the header argument appropriately.
+•Call summary() on hotdogs. This will print out some summary statistics about all variables in the data frame.
+
+
+###5.read.table
+
+ 이국적인 플랫 파일 형식을 다루는 경우 read.table ()을 사용하는 것이 좋습니다. 가장 기본적인 가져 오기 기능입니다. 이 함수에서 여러 개의 다른 인수를 지정할 수 있습니다. read.csv () 및 read.delim ()과 달리 헤더 인수의 기본값은 FALSE이고 sep 인수는 기본적으로 "" 입니다.
+
+ 데이터는 여전히 hotdogs.txt입니다. 첫 번째 행에는 열 이름이없고 필드 구분 기호는 탭입니다. 그러나 이번에는 파일이 현재 작업 디렉토리의 데이터 폴더에 있습니다. 이 파일의 위치가있는 변수 경로가 이미 코드화되어 있습니다.
+```{r}
+# Path to the hotdogs.txt file: path
+path <- file.path("C:", "Users", "lhj91", "Desktop", "hotdogs.txt")
+##file.path는 파일경로 구분해주는 명령어....!!그닥...도움x
+
+# Import the hotdogs.txt file: hotdogs
+hotdogs <- read.table(path, 
+                      sep = "\t", # /가아니라\임 구분할 것.
+                      col.names = c("type", "calories", "sodium")) #필드명 설정
+
+# Call head() on hotdogs
+head(hotdogs)
+
+```
+문제:
+•Finish the read.table() call that's been prepared for you. Use the path variable, and make sure to set sep correctly.
+•Call head() on hotdogs; this will print the first 6 observations in the data frame.
+
+
+
+###6.Arguments
+
+Lily과 Tom은 핫도그를 공유하기를 원하기 때문에 논쟁을 벌이고있다. 그러나 그들은 어느 것을 골라야할지 동의 할 수 없다. 얼마 후, 그들은 각각 하나씩 가질 것이라고 간단히 결정합니다. 릴리는 칼로리가 가장 적은 것을 원하고 탐은 나트륨이 가장 많은 것을 원합니다.
+
+칼로리와 나트륨 옆에는 핫도그가 하나 더 변수가 있습니다. 이것은 세 가지 중 하나 일 수 있습니다 : Beef, Meat 또는 Poultry, 범주 형 변수 : factor가 좋습니다.
+
+```{r}
+# Finish the read.delim() call
+hotdogs <- read.delim("C:/Users/lhj91/Desktop/hotdogs.txt", header = FALSE, col.names = c("type", "calories", "sodium"))
+
+# Select the hot dog with the least calories: lily
+lily <- hotdogs[which.min(hotdogs$calories), ]
+
+# Select the observation with the most sodium: tom
+tom <- hotdogs[which.max(hotdogs$sodium), ]
+
+# Print lily and tom
+lily
+tom
+
+```
+####문제:
+
+•Finish the read.delim() call to import the data in "hotdogs.txt". It's a tab-delimited file without names in the first row.
+•The code that selects the observation with the lowest calorie count and stores it in the variable lily is already available. It uses the function which.min(), that returns the index the smallest value in a vector.
+•Do a similar thing for Tom: select the observation with the most sodium and store it in tom. Use which.max() this time.
+•Finally, print both the observations lily and tom.
+
+
+###7.Column classes
+
+ 열 이름 옆에서 결과 데이터 프레임의 열 유형 또는 열 클래스를 지정할 수도 있습니다. colClasses 인수를 클래스를 나타내는 문자열 벡터로 설정하면됩니다.
+```{r}
+#read.delim("my_file.txt", 
+#           colClasses = c("character",
+#                          "numeric",
+#                          "logical"))
+```
+
+ 이 방법은 factors이되어야하는 일부 열과 문자가되어야하는 다른 열이있는 경우 유용 할 수 있습니다. 더 이상 문자열로 귀찮게하지 않아도됩니다. 각 열에 대해 클래스가 무엇인지 명시해야합니다.
+ 
+ colClasses 벡터에서 열이 "NULL"로 설정된 경우이 열은 건너 뛰고 데이터 프레임에로드되지 않습니다.
+ 
+ 
+ 
+```{r}
+# Previous call to import hotdogs.txt
+hotdogs <- read.delim("hotdogs.txt", header = FALSE, col.names = c("type", "calories", "sodium"))
+
+# Display structure of hotdogs
+str(hotdogs)
+
+# Edit the colClasses argument to import the data correctly: hotdogs2
+hotdogs2 <- read.delim("C:/Users/lhj91/Desktop/hotdogs.txt", header = FALSE, 
+                       col.names = c("type", "calories", "sodium"),
+                       colClasses = c("factor","NULL","numeric"))
+
+
+# Display structure of hotdogs2
+str(hotdogs2)
+```
+####문제:
+
+•The read.delim() call from before is already included and creates the hotdogs data frame. Go ahead and display the structure of hotdogs.
+• Edit the second read.delim() call. Assign the correct vector to the colClasses argument. NA should be replaced with a character vector: c("factor", "NULL", "numeric").
+•Display the structure of hotdogs2 and look for the difference.

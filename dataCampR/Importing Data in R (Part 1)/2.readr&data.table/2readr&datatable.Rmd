@@ -1,0 +1,268 @@
+---
+title: "2.readr&data.table"
+author: "HaeJoong Lee"
+date: "2017년 2월 8일"
+output: html_document
+---
+##2.1. read_csv
+
+read_csv ()를 사용하여 CSV 파일을 가져올 수 있습니다. 모든 세부 정보를 처리하는 read_delim () 주변의 래퍼 함수입니다. 예를 들어 첫 번째 행에 열 이름이 있다고 가정합니다.
+
+여기에서 작업 할 데이터 세트는 potatoes.csv입니다. 저장 기간과 요리가 감자 맛에 미치는 영향에 대한 정보를 제공합니다. 쉼표를 사용하여 레코드의 필드를 구분하고 첫 번째 행에 열 이름을 포함합니다. 작업 공간에서 파일을 사용할 수 있습니다. dir ()을 사용하여 작업 공간을 검사 할 수 있다는 것을 기억하십시오.
+
+####Instructions
+
+•Load the readr package with library(). It's already installed on DataCamp's servers.
+•Import "potatoes.csv" using read_csv(). Assign the resulting data frame to the variable potatoes.
+
+```{r}
+# Load the readr package
+install.packages("readr")
+library(readr)
+
+# Import potatoes.csv with read_csv(): potatoes
+potatoes<-read_csv("C:/Users/lhj91/Desktop/Importing Data in R (Part 1)/potatoes.csv")
+```
+
+
+
+##2.2. read_tsv
+
+read_csv ()를 사용하여 CSV 파일을 쉽게 읽는 경우 read_tsv ()를 사용하여 TSV 파일을 쉽게 읽을 수 있습니다. TSV는 탭 구분 값의 줄임말입니다.
+
+이번에는 감자 데이터가 탭 구분 값 파일 형태로 제공됩니다. potatoes.txt는 작업 공간에서 사용할 수 있습니다. potatoes.csv와 달리이 파일에는 첫 번째 행에 열 이름이 없습니다.
+
+이러한 열 이름을 수동으로 지정하는 데 사용할 수있는 벡터 속성이 있습니다.
+
+####Instructions
+
+•Use read_tsv() to import the potatoes data from potatoes.txt and store it in the data frame potatoes. In addition to the path to the file, you'll also have to specify the col_names argument; you can use the properties vector for this.
+
+•Call head() on potatoes to show the first observations of your dataset.
+
+```{r}
+# readr is already loaded
+
+# Column names
+properties <- c("area", "temp", "size", "storage", "method",
+                "texture", "flavor", "moistness")
+
+# Import potatoes.txt: potatoes
+potatoes<-read_tsv("C:/Users/lhj91/Desktop/Importing Data in R (Part 1)/potatoes.txt",properties)
+
+# Call head() on potatoes
+head(potatoes)
+```
+
+
+
+##2.3 read_delim
+
+read.table ()이 주요 utils 함수였던 것처럼, read_delim ()은 주요 readr 함수입니다.
+
+read_delim ()은 두 개의 필수 인수를 취합니다.
+
+•file: the file that contains the data
+• delim: the character that separates the values in the data file
+
+다시 감자를 먹을거야. 파일은 탭 ( "\ t")을 사용하여 값을 구분하고 첫 x 째 행에 컬럼 이름을 포함하지 않습니다. 작업 디렉토리에서 사용할 수 있으므로 즉시 시작할 수 있습니다. 이전과 마찬가지로 벡터 속성을 사용하여 col_names를 설정할 수 있습니다.
+
+###Instructions
+
+•Import all the data in "potatoes.txt" using read_delim(); store the resulting data frame in potatoes.
+•Print out potatoes.
+
+```{r}
+# readr is already loaded
+
+# Column names
+properties <- c("area", "temp", "size", "storage", "method",
+                "texture", "flavor", "moistness")
+
+# Import potatoes.txt using read_delim(): potatoes
+potatoes <- read_delim("C:/Users/lhj91/Desktop/Importing Data in R (Part 1)/potatoes.txt", delim = "\t", col_names = properties)
+
+# Print out potatoes
+potatoes
+```
+
+
+
+##2.4. skip and n_max
+
+건너 뛰기와 n_max를 통해 플랫 파일의 어느 부분을 실제로 R로 가져올 지 제어 할 수 있습니다.
+
+• 건너 뛰기는 실제로 데이터 가져 오기를 시작하기 전에 플랫 파일에서 무시할 줄 수를 지정합니다.
+• n_max는 실제로 가져 오는 행 수를 지정합니다.
+
+예를 들어 20 줄의 CSV 파일이 있고 skip = 2 및 n_max = 3으로 설정하면 파일의 3, 4, 5 줄만 읽는 것입니다.
+
+조심해 : 몇 줄을 건너 뛰면 열 이름을 포함 할 수있는 첫 줄도 건너 뜁니다!
+
+tapes로 구분 된 레코드가 있고 열 이름이없는 플랫 파일 인 potatoes.txt를 작업 영역에서 사용할 수 있습니다.
+
+
+###Instructions
+
+Finish the first read_tsv() call to import observations 7, 8, 9, 10 and 11 from potatoes.txt.
+
+```{r}
+# readr is already loaded
+
+# Column names
+properties <- c("area", "temp", "size", "storage", "method",
+                "texture", "flavor", "moistness")
+
+# Import 5 observations from potatoes.txt: potatoes_fragment
+potatoes_fragment <- read_tsv("C:/Users/lhj91/Desktop/Importing Data in R (Part 1)/potatoes.txt", skip = 6, n_max = 5, col_names = properties)
+```
+
+
+
+##2.5. col_types
+
+가져온 데이터 프레임의 열에 어떤 유형을 지정해야 할 수도 있습니다. col_types로이 작업을 수행 할 수 있습니다. NULL로 설정된 경우, readr 패키지의 기본 함수는 올바른 유형 자체를 찾으려고 시도합니다. 문자열을 사용하여 유형을 수동으로 설정할 수 있습니다. 여기서 각 문자는 열의 클래스를 나타냅니다 (문자, 이중, 정수 및 논리). _ 열 전체를 건너 뜁니다.
+
+tapes로 구분 된 레코드가 있고 열 이름이없는 플랫 파일 인 potatoes.txt는 다시 작업 영역에서 사용할 수 있습니다.
+
+
+###Instructions
+
+•In the second read_tsv() call, edit the col_types argument to import all columns as characters (c). Store the resulting data frame in potatoes_char.
+•Print out the structure of potatoes_char and verify whether all column types are chr, short for character.
+
+```{r}
+# readr is already loaded
+
+# Column names
+properties <- c("area", "temp", "size", "storage", "method",
+                "texture", "flavor", "moistness")
+
+# Import all data, but force all columns to be character: potatoes_char
+potatoes_char <- read_tsv("C:/Users/lhj91/Desktop/Importing Data in R (Part 1)/potatoes.txt", col_types = "cccccccc", col_names = properties)
+
+# Print out structure of potatoes_char
+str(potatoes_char)
+```
+
+
+
+##2.6. col_types with collectors
+
+가져온 열의 유형을 설정하는 또 다른 방법은 collectors를 사용하는 것입니다.
+collectors함수는 read_function의 col_types 인수에 list ()로 전달하여 열의 값을 해석하는 방법을 알려줄 수 있습니다.
+
+수집기 기능의 전체 목록은 수집기 설명서를 참조하십시오. 이 연습에서는 두 가지 수집기 기능이 필요합니다.
+• col_integer () : 열은 정수로 해석되어야합니다.
+• col_factor (levels, ordered = FALSE) : 열은 수준이있는 계수로 해석되어야합니다.
+
+이 연습에서는 첫 번째 행에 열 이름이없는 탭으로 구분 된 파일 인 hotdogs.txt를 사용합니다.
+
+
+###Instructions
+
+• hotdogs is created for you without setting the column types. Inspect its summary using the summary() function.
+•Two collector functions are defined for you: fac and int. Have a look at them, do you understand what they're collecting?
+•In the second read_tsv() call, edit the col_types argument: Pass a list() with the elements fac, int and int, so the first column is importead as a factor, and the second and third column as integers.
+•Create a summary() of hotdogs_factor. Compare this to the summary of hotdogs.
+
+```{r}
+# readr is already loaded
+
+# Import without col_types
+hotdogs <- read_tsv("C:/Users/lhj91/Desktop/Importing Data in R (Part 1)/hotdogs.txt", col_names = c("type", "calories", "sodium"))
+
+# Display the summary of hotdogs
+summary(hotdogs)
+
+# The collectors you will need to import the data
+fac <- col_factor(levels = c("Beef", "Meat", "Poultry"))
+int <- col_integer()
+
+# Edit the col_types argument to import the data correctly: hotdogs_factor
+hotdogs_factor <- read_tsv("C:/Users/lhj91/Desktop/Importing Data in R (Part 1)/hotdogs.txt",
+                           col_names = c("type", "calories", "sodium"),
+                           col_types = list(fac,int,int))
+
+# Display the summary of hotdogs_factor
+summary(hotdogs_factor)
+
+```
+
+
+
+##2.7. fread
+
+read.table ()을 사용하는 방법을 기억하고 있습니다. 음, fread ()는 매우 비슷한 인수로 동일한 작업을 수행하는 함수입니다. 사용하기가 매우 쉽고 놀랍도록 빨리! 파일 경로를 지정하는 것만으로도 데이터를 성공적으로 가져올 수 있습니다.
+
+그것에 대해 우리의 말을 믿지 마시고, 직접 시험해보십시오! 작업 공간에서 사용할 수있는 potatoes.csv 파일로 작업하게됩니다. 필드는 쉼표로 구분되며 첫 번째 행에는 열 이름이 포함됩니다.
+
+
+###Instructions.
+
+•Load the data.table package using library(); it is already installed on DataCamp's servers.
+•Import "potatoes.csv" with fread(). Simply pass it the file path and see if it worked. Store the result in a variable potatoes.
+•Print out potatoes.
+
+```{r}
+# load the data.table package
+library(data.table)
+
+# Import potatoes.csv with fread(): potatoes
+potatoes<-fread("C:/Users/lhj91/Desktop/Importing Data in R (Part 1)/potatoes.csv")
+
+# Print out potatoes
+potatoes
+```
+
+
+##2.8. fread: more advanced use
+
+이제 fread ()에 대한 기본 사항을 알았으므로 함수의 두 인수 (drop 및 select)를 알고 관심있는 변수를 삭제하거나 선택해야합니다.
+
+5 개의 변수가 포함 된 데이터 집합이 있고 "a"와 "e"라는 첫 번째 및 다섯 번째 변수를 유지하려고한다고 가정합니다. 다음 옵션이 모두 트릭을 수행합니다.
+ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
+fread("path/to/file.txt", drop = 2:4)
+fread("path/to/file.txt", select = c(1, 5))
+fread("path/to/file.txt", drop = c("b", "c", "d")
+fread("path/to/file.txt", select = c("a", "e"))
+ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
+우리가 DataCamp에서 특히 좋아하기 때문에 감자를 고집합시다. 데이터는 쉼표로 구분 된 레코드가 들어있는 potatoes.csv 파일에서 다시 사용할 수 있습니다.
+
+###Instructions
+
+•Using fread() and select or drop as arguments, only import the texture and moistness columns of the flat file. They correspond to the columns 6 and 8 in "potatoes.csv". Store the result in a variable potatoes.
+
+• plot() 2 columns of the potatoes data frame: texture on the x-axis, moistness on the y-axis. Use the dollar sign notation twice. Feel free to name your axes and plot.
+
+```{r}
+# fread is already loaded
+
+# Import columns 6 and 8 of potatoes.csv: potatoes
+potatoes<-fread("C:/Users/lhj91/Desktop/Importing Data in R (Part 1)/potatoes.csv",select=c(6,8))
+
+# Plot texture (x) and moistness (y) of potatoes
+plot(potatoes$texture,potatoes$moistness)
+```
+
+
+
+##2.9. Dedicated classes
+
+fread () 함수는 인쇄 할 때 약간 다르게 보이는 데이터 프레임을 생성한다는 것을 알았을 것입니다. data.table이라는 다른 클래스가 결과 데이터 프레임에 할당되기 때문입니다. 이러한 data.table 객체의 인쇄물이 다릅니다. readr에 의해 생성 된 데이터 프레임과 비슷한 것이 있습니까?
+
+현재 작업 디렉토리에서 potatoes.csv 파일을 준비했습니다. data.table 및 readr 패키지가 모두로드되므로 곧바로 실험 할 수 있습니다.
+
+다음 중 진술이 사실입니까?
+
+Possible Answers
+
+1. fread() creates an object whose only class is data.table class. read_tsv() creates an object with class tbl_df.
+
+2. The class of the result of fread() is only data.table. That of the result of read_tsv() is both tbl_df and tbl.
+
+3. The class of the result of fread() is both data.table and data.frame. read_tsv() creates an object with three classes: tbl_df, tbl and data.frame.
+
+4. fread() creates an object of the data.table class, while read_tsv() simply generates a data.frame, nothing more.
+
+답:3번
