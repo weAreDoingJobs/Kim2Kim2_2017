@@ -1,0 +1,103 @@
+---
+title: "correlationExample"
+author: "이상인"
+date: "2017년 3월 6일"
+output: html_document
+---
+```{r}
+library(Rcmdr)
+install.packages("RcmdrPlugin.TeachingDemos")
+library(RcmdrPlugin.TeachingDemos)
+library(Rcmdr)
+ls("package:RcmdrPlugin.TeachingDemos")
+simulateConfidenceIntervals
+Commander()
+centralLimitTheorem
+```
+
+
+```{r}
+simulateConfidenceIntervals <- function(){
+  defaults <- list(muVar =100, sigmaVar = "15", nVar="25", repsVar="50",confLevelVar = ".95",sigmaKnowVar="1")
+  dialog.values <- getDialog("simulateConfidenceIntervals",defaults)
+  initalizeDialog(title = gettextRcmdr("Confidence Intervals for the Mean"))
+  muVar <- tclVar(dialog.values$muVar)
+  muEntry <- tkEntry(top, width ="6",textvariable = muVar)
+  sigmaVar <- tclVar(dialog.values$sigmaVar)
+  sigmaEntry <- tkentry(top, width = "6", textvariable = sigmaVar)
+  nVar <- tclVar(dialog.values$nVar)
+  nEntry <- tkentry(top,width = "6",textvariable = nVar)
+  repsVar <- tclVar(dialog.vaules$repsVar)
+  repsEntry <- tkentry(top,width = "6",textvariable = repsVar)
+  confLevelVar <- tclVar(dialog.values$confLevelVar)
+  confLevelEntry <- tkentry(top,width = "6", textvariable = confLevelVar)
+  sigmaKnownVar <- tclVar(dialog.values$sigmaKnownVar)
+  sigmaKnownBox <- tkcheckbutton(top,variable = sigmaKnownVar)
+  onOk <- function(){
+    closeDialog()
+    mu <- as.numeric(tclvalue(muVar))
+      if(is.na(mu)){
+           errorCondition(recall = simulateConfidenceIntervals,
+               message = "Population mean must be a number.")
+           return()
+      }
+    sigma <- as.numeric(tclvalue(sigmaVar))
+    if(is.na(sigma) || sigma <= 0){
+            errorCondition(recall = simulateConfidenceIntervals, 
+                message = "Population standard deviation must be a positive number.")
+            return()
+        }
+        n <- round(as.numeric(tclvalue(nVar)))
+        if (is.na(n) || n <= 0) {
+            errorCondition(recall = simulateConfidenceIntervals, 
+                message = "Sample size must be a positive integer.")
+            return()
+        }
+        reps <- round(as.numeric(tclvalue(repsVar)))
+        if (is.na(reps) || reps <= 0) {
+            errorCondition(recall = simulateConfidenceIntervals, 
+                message = "Number of samples must be a positive integer.")
+            return()
+        }
+        confLevel <- as.numeric(tclvalue(confLevelVar))
+        if (is.na(confLevel) || confLevel <= 0 || confLevel >= 
+            1) {
+            errorCondition(recall = simulateConfidenceIntervals, 
+                message = "Confidence level must be between 0 and 1.")
+            return()
+        }
+        sigmaKnown <- as.numeric(tclvalue(sigmaKnownVar))
+        putDialog("simulateConfidenceIntervals", lapply(list(muVar = mu, 
+                                                             sigmaVar = sigma,nVar = n,repsVar = reps,
+                                                             confLevelVar = confLevel,
+                                                             sigmaKnowVar = sigmaKnown),as.character))
+        command <- paste("ci.examp(mean.sim = ",mu,", sd = ",sigma,", n = ",n,", reps = ",reps,",conf.level = ",
+                         confLevel,", method = ",if(sigmaKnown)"\"z\"" else "\"t\"",")",sep = "")
+        doItAndPrint(command)
+        tkfocus(CommanderWindow())
+  }
+      OKCancelHelp(helpSubject = "ci.examp", reset = "simulateConfidenceIntervals", apply = "simulateConfidenceIntervals")
+    tkgrid(tklabel(top, text = "happy birthday"), muEntry, sticky = "e")
+    tkgrid(tklabel(top, text = "Population standard deviation"), 
+        sigmaEntry, sticky = "e")
+    tkgrid(tklabel(top, text = "Sample size"), nEntry, sticky = "e")
+    tkgrid(tklabel(top, text = "Number of samples"), repsEntry, sticky = "e")
+    tkgrid(tklabel(top, text = "Confidence level"), confLevelEntry, sticky = "e")
+    tkgrid(tklabel(top, text = "Population standard deviation known"), sigmaKnownBox, sticky = "e")
+    tkgrid(buttonsFrame, sticky = "w", columnspan = 2)
+    tkgrid.configure(muEntry, sticky = "w")
+    tkgrid.configure(sigmaEntry, sticky = "w")
+    tkgrid.configure(nEntry, sticky = "w")
+    tkgrid.configure(repsEntry, sticky = "w")
+    tkgrid.configure(confLevelEntry, sticky = "w")
+    tkgrid.configure(sigmaKnownBox, sticky = "w")
+    dialogSuffix(rows = 7, columns = 2, focus = muEntry)
+}
+
+
+```
+
+```{r}
+simulateConfidenceIntervals
+```
+
