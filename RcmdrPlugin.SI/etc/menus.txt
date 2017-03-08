@@ -1,0 +1,17 @@
+# Rcmdr menus for SI package
+# If there is any error related to menu on this package, please email to <tkddls5611@gmail.com>. I always welcome your email.
+
+
+#   type    menu/item      operation/parent  label                              command/menu                activation    install?
+menu          siMenu          topMenu         ""                                    ""                          ""           ""
+item         topMenu          cascade         "SI"                                 siMenu                       ""           ""
+ 
+item          siMenu          command   "Acceptance Sampling by Attributes"          ASA                        ""           ""
+
+
+menu        asvMenu           siMenu         ""                                      ""                         ""           ""
+item        siMenu            cascade   "Acceptance Sampling by Variables..."     asvMenu                       ""           ""
+
+
+item        asvMenu       command       "Acceptance Sampling by Variables(Create/Compare)"              hello        ""    ""
+item        asvMenu       command       "Acceptance Sampling by Variables(Accept/Reject Lot)"           hello        ""    ""

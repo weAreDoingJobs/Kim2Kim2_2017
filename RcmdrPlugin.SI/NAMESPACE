@@ -1,0 +1,6 @@
+
+import(stats, Rcmdr, TeachingDemos, rgl, tkrplot)
+importFrom("tcltk", "tkbutton")
+importFrom("graphics", "plot", "title")
+
+exportPattern("^[[:alpha:]]+")
