@@ -4,6 +4,8 @@ Title: Sampling inspection
 Version: 0.1.0
 Author: Lee Sangin
 Maintainer: Lee Sangin <tkddls5611@gmail.com>
+Depends: rgl, tkrplot
+Imports: Rcmdr
 Description: This is graduate project of Industrial Management Engineering, Hankuk University of Foreign Studies.
     This is for Sampling Inspection.
 License: Lee Sangin
