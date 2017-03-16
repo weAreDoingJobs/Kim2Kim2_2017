@@ -6,8 +6,16 @@ output: html_document
 ---
 teachingdemos > central limit theorem
 ```{r}
+library(RcmdrPlugin.TeachingDemos)
 ls("package:RcmdrPlugin.TeachingDemos")
 ls("package:TeachingDemos")
+library(RcmdrPlugin.coin)
+ls("package:RcmdrPlugin.coin")
+fncCoinCochraneMHTest
+install.packages("RcmdrPlugin.survival")
+library(RcmdrPlugin.survival)
+ls("package:RcmdrPlugin.survival")
+
 ```
 
 ```{r}
