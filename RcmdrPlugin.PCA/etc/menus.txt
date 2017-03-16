@@ -2,21 +2,22 @@
 # If there is any error related to menu on this package, please email to <tkddls5611@gmail.com>.  I always welcome your email.
 
 
-#   type    menu/item      operation/parent  label                              command/menu                activation    install?
-menu    pcaMenu             topMenu         ""                                      ""                          ""           ""
-item    topMenu             cascade         "공정능력분석(PCA)"                 pcaMenu                         ""           ""
+#   type    menu/item      operation/parent  label                              command/menu                activation                     install?
+menu    pcaMenu             topMenu         ""                                      ""                          ""                           ""
+item    topMenu             cascade         "공정능력분석(PCA)"                 pcaMenu                         ""                           ""
 
-menu    continuousDataMenu  pcaMenu         ""                                     ""                          ""           ""
-item    pcaMenu             cascade         "연속형 데이터"                     continuousDataMenu              ""           ""
+menu    continuousDataMenu  pcaMenu         ""                                     ""                           ""                           ""
+item    pcaMenu             cascade         "연속형 데이터"                     continuousDataMenu              ""                           ""
 
-item    continuousDataMenu  command         "정규 분포"                         hello                           ""           ""
-item    continuousDataMenu  command         "비정규 분포"                       hello                           ""           ""
-item    continuousDataMenu  command         "군간/군내"                         hello                           ""           ""
-
-
-menu    coefficentDataMenu  pcaMenu         ""                                      ""                          ""           ""
-item    pcaMenu             cascade         "계수형 데이터"                     coefficentDataMenu              ""           ""
+item    continuousDataMenu  command         "정규 분포"                         pca.norm.ui                     "activeDataSetP()"           ""
+item    continuousDataMenu  command         "정규 분포(개발중)"                 pca.norm.ui.test                "activeDataSetP()"           ""
+item    continuousDataMenu  command         "비정규 분포"                       hello                           "activeDataSetP()"           ""
+item    continuousDataMenu  command         "군간/군내"                         hello                           "activeDataSetP()"           ""
 
 
-item    coefficentDataMenu  command         "이항분포 공정능력 분석"            hello                           ""           ""
-item    coefficentDataMenu  command         "포아송분포 공정능력 분석"          hello                           ""           ""
+menu    coefficentDataMenu  pcaMenu         ""                                      ""                          ""                           ""
+item    pcaMenu             cascade         "계수형 데이터"                     coefficentDataMenu              ""                           ""
+
+
+item    coefficentDataMenu  command         "이항분포 공정능력 분석"            hello                           "activeDataSetP()"           ""
+item    coefficentDataMenu  command         "포아송분포 공정능력 분석"          hello                           "activeDataSetP()"           ""

@@ -1,11 +1,13 @@
 Package: RcmdrPlugin.PCA
 Type: Package
-Title: PCA(Process Capability Analysis)
+Title: PCA
 Version: 0.1.0
 Author: Lee Sangin
 Maintainer: Lee Sangin <tkddls5611@gmail.com>
-Description: This is graduate project of Industrial Management Engineering, Hankuk University of Foreign Studies.
-    This is for Process Capability Analysis(PCA).
+Depends: rgl, tkrplot, SixSigma, R (>= 2.15)
+Imports: Rcmdr
+Suggests: knitr, rmarkdown, compute.es, ggplot2, gridExtra, scales
+Description: This is a graduation project in Industrial Management Engineering, Hankuk University of Foreign Studies.
 License: Lee Sangin
 Encoding: UTF-8
 LazyData: true
