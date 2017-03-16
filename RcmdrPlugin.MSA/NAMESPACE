@@ -1,1 +1,14 @@
+#NAMESPACE RcmdrPlugin.MSA
+
+import(stats,MAd, metafor,  Rcmdr, rgl,SixSigma, tkrplot)
+importFrom("tcltk", "tkbutton")
+importFrom("graphics", "plot", "title")
+importFrom(utils, available.packages, browseURL, capture.output, contrib.url, globalVariables,
+           install.packages, installed.packages, localeToCharset, packageVersion,read.csv, read.csv2, read.delim, tail, write.csv)
+importFrom(tcltk, addTclPath, ttkcombobox, tkgrid.propagate, tkwidget, tk_messageBox,
+           tkmenu, tkpopup, tkadd, tkwinfo, tktag.add, tkevent.generate)
+# We only need the Tcl package tablelist
+importFrom(tcltk2, tk2tablelist, tk2tip)
 exportPattern("^[[:alpha:]]+")
+exportPattern(".")
+exportPattern("^[^\\.]")
